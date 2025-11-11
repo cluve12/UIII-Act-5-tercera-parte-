@@ -1,0 +1,85 @@
+{% extends 'app_Subway/base.html' %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <h2 class="mb-4" style="color: #009246;">
+            <i class="fas fa-edit me-2"></i>Actualizar Cliente
+        </h2>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card card-custom">
+            <div class="card-body">
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    
+                    <!-- Nuevo campo para foto de perfil -->
+                    <div class="row mb-3">
+                        <div class="col-12">
+                            <label class="form-label">Foto de Perfil</label>
+                            {% if cliente.foto_perfil %}
+                                <div class="mb-2">
+                                    <img src="{{ cliente.foto_perfil.url }}" alt="Foto actual" class="img-thumbnail" style="max-width: 150px; max-height: 150px;">
+                                    <div class="form-text">Foto actual</div>
+                                </div>
+                            {% endif %}
+                            <input type="file" class="form-control" name="foto_perfil" accept="image/*">
+                            <div class="form-text">Dejar vacío para mantener la foto actual</div>
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Nombre Completo</label>
+                            <input type="text" class="form-control" name="nombre" value="{{ cliente.nombre }}" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Correo Electrónico</label>
+                            <input type="email" class="form-control" name="correo" value="{{ cliente.correo }}" required>
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Teléfono</label>
+                            <input type="text" class="form-control" name="telefono" value="{{ cliente.telefono }}" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Fecha de Registro</label>
+                            <input type="date" class="form-control" name="fecha_registro" value="{{ cliente.fecha_registro|date:'Y-m-d' }}" required>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Dirección</label>
+                        <textarea class="form-control" name="direccion" rows="3" required>{{ cliente.direccion }}</textarea>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Sucursal</label>
+                        <select class="form-select" name="sucursal" required>
+                            {% for sucursal in sucursales %}
+                            <option value="{{ sucursal.id }}" {% if sucursal.id == cliente.sucursal.id %}selected{% endif %}>
+                                {{ sucursal.nombre }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a href="{% url 'ver_clientes' %}" class="btn btn-secondary me-md-2">
+                            <i class="fas fa-arrow-left me-1"></i>Cancelar
+                        </a>
+                        <button type="submit" class="btn btn-subway">
+                            <i class="fas fa-save me-1"></i>Actualizar Cliente
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

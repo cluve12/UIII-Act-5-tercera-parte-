@@ -1,0 +1,85 @@
+{% extends 'app_Subway/base.html' %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 style="color: #009246;">
+                <i class="fas fa-users me-2"></i>Lista de Clientes
+            </h2>
+            <a href="{% url 'agregar_cliente' %}" class="btn btn-subway">
+                <i class="fas fa-user-plus me-1"></i>Agregar Cliente
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card card-custom">
+            <div class="card-body">
+                {% if clientes %}
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead style="background-color: #009246; color: white;">
+                            <tr>
+                                <th>Foto</th>
+                                <th>Nombre</th>
+                                <th>Teléfono</th>
+                                <th>Correo</th>
+                                <th>Dirección</th>
+                                <th>Fecha Registro</th>
+                                <th>Sucursal</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for cliente in clientes %}
+                            <tr>
+                                <td>
+                                    {% if cliente.foto_perfil %}
+                                        <img src="{{ cliente.foto_perfil.url }}" alt="Foto de {{ cliente.nombre }}" 
+                                             class="rounded-circle" style="width: 50px; height: 50px; object-fit: cover;">
+                                    {% else %}
+                                        <div class="rounded-circle d-flex align-items-center justify-content-center" 
+                                             style="width: 50px; height: 50px; background-color: #e9ecef; color: #6c757d;">
+                                            <i class="fas fa-user"></i>
+                                        </div>
+                                    {% endif %}
+                                </td>
+                                <td>{{ cliente.nombre }}</td>
+                                <td>{{ cliente.telefono }}</td>
+                                <td>{{ cliente.correo }}</td>
+                                <td>{{ cliente.direccion }}</td>
+                                <td>{{ cliente.fecha_registro }}</td>
+                                <td>{{ cliente.sucursal.nombre }}</td>
+                                <td>
+                                    <div class="btn-group">
+                                        <a href="{% url 'actualizar_cliente' cliente.id %}" class="btn btn-warning btn-sm">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <a href="{% url 'borrar_cliente' cliente.id %}" class="btn btn-danger btn-sm">
+                                            <i class="fas fa-trash"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="text-center py-4">
+                    <i class="fas fa-users fa-3x text-muted mb-3"></i>
+                    <h4 class="text-muted">No hay clientes registrados</h4>
+                    <p class="text-muted">Comienza agregando tu primer cliente.</p>
+                    <a href="{% url 'agregar_cliente' %}" class="btn btn-subway">
+                        <i class="fas fa-user-plus me-1"></i>Agregar Primer Cliente
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
